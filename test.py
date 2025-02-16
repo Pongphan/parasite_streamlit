@@ -65,8 +65,8 @@ def parasitic_image_viewer_page():
     #--------------------------------------------------------------------------------------------
     #change during deploy
     #--------------------------------------------------------------------------------------------
-    folder = "C:/Users/Pongphan/Desktop/ev-web"
-    #folder = "ev-web"
+    #folder = "C:/Users/Pongphan/Desktop/ev-web"
+    folder = "ev-web"
 
     images = []
     for filename in os.listdir(folder):
