@@ -64,10 +64,8 @@ def parasitic_image_viewer_page():
     st.write("This app displays images from a local folder in a grid layout.")
 
     #folder = "C:/Users/Pongphan/Desktop/ev-web"
-    #folder = "https://github.com/Pongphan/parasite_streamlit/tree/main/ev-web?raw=true"
-    #folder = "https://github.com/Pongphan/parasite_streamlit/tree/581109d805d5a60d9a772562fe543d2e149edc7a/ev-web"
     folder = "ev-web"
-    
+
     images = []
     for filename in os.listdir(folder):
         if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
@@ -86,7 +84,8 @@ def parasitic_image_viewer_page():
         for i in range(0, len(images), cols_per_row):
             cols = st.columns(cols_per_row)
             for col, (filename, image) in zip(cols, images[i:i+cols_per_row]):
-                col.image(image, caption=filename, use_column_width=True)
+                #col.image(image, caption=filename, use_column_width=True)
+                col.image(image, caption=filename, use_container_width=True)
     else:
         st.info("No images found in the folder.")
 
@@ -137,20 +136,18 @@ def about_page():
 #------------------------------------------------------------------------------------------------
 #main function
 #------------------------------------------------------------------------------------------------
+
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 if not st.session_state.logged_in:
-    # If not logged in, show the login page
     login_page()
 else:
-    # Sidebar navigation (visible only when logged in)
     st.sidebar.title("Platform Navigation")
     selected_page = st.sidebar.radio(
         "Go to", 
         ("Parasitic Lecture", "Parasitic Image Viewer", "Parasitic Examination", "Parasitic Detection", "About"))
     
-    # Render the selected page
     if selected_page == "Parasitic Lecture":
         parasitic_lecture_page()
     elif selected_page == "Parasitic Image Viewer":
@@ -162,6 +159,5 @@ else:
     elif selected_page == "About":
         about_page()
     
-    # Logout button in the sidebar
     if st.sidebar.button("Logout"):
         st.session_state.logged_in = False
