@@ -1,1 +1,7 @@
-
+streamlit
+cv2
+numpy
+tensorflow
+keras.models
+tensorflow.keras.losses
+PIL
