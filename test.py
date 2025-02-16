@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+import os
 
 #------------------------------------------------------------------------------------------------
 #login_page
@@ -57,18 +58,19 @@ def parasitic_lecture_page():
 #parasitic_image_viewer_page
 #------------------------------------------------------------------------------------------------
 
-import os
-
 def parasitic_image_viewer_page():
     st.title("Parasite Image Viewer")
     st.write("This app displays images from a local folder in a grid layout.")
 
-    #folder = "C:/Users/Pongphan/Desktop/ev-web"
-    folder = "ev-web"
+    #--------------------------------------------------------------------------------------------
+    #change during deploy
+    #--------------------------------------------------------------------------------------------
+    folder = "C:/Users/Pongphan/Desktop/ev-web"
+    #folder = "ev-web"
 
     images = []
     for filename in os.listdir(folder):
-        if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.tif')):
             filepath = os.path.join(folder, filename)
             try:
                 image = Image.open(filepath)
@@ -84,8 +86,8 @@ def parasitic_image_viewer_page():
         for i in range(0, len(images), cols_per_row):
             cols = st.columns(cols_per_row)
             for col, (filename, image) in zip(cols, images[i:i+cols_per_row]):
-                #col.image(image, caption=filename, use_column_width=True)
-                col.image(image, caption=filename, use_container_width=True)
+                col.image(image, caption=filename, use_column_width=True)
+                #col.image(image, caption=filename, use_container_width=True)
     else:
         st.info("No images found in the folder.")
 
@@ -117,7 +119,7 @@ def parasitic_detection_page():
     st.subheader("Upload & View Image")
     st.write("Upload an image and view it below.")
     
-    uploaded_file = st.file_uploader("Choose an image file", type=["png", "jpg", "jpeg"])
+    uploaded_file = st.file_uploader("Choose an image file", type=["png", "jpg", "jpeg", ".tif"])
     if uploaded_file is not None:
         try:
             image = Image.open(uploaded_file)
