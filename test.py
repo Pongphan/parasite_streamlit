@@ -64,7 +64,7 @@ def parasitic_image_viewer_page():
     st.write("This app displays images from a local folder in a grid layout.")
 
     #folder = "C:/Users/Pongphan/Desktop/ev-web"
-    folder = "https://github.com/Pongphan/parasite_streamlit/tree/main/ev-web"
+    folder = "https://github.com/Pongphan/parasite_streamlit/tree/main/ev-web?raw=true"
 
     images = []
     for filename in os.listdir(folder):
