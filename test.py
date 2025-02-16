@@ -70,10 +70,9 @@ def parasitic_image_viewer_page():
     st.write("This app displays images from a local folder in a grid layout.")
 
     #--------------------------------------------------------------------------------------------
-    #change during deploy
-    #--------------------------------------------------------------------------------------------
     #folder = "C:/Users/Pongphan/Desktop/ev-web"
     folder = "ev-web"
+    #--------------------------------------------------------------------------------------------
 
     images = []
     for filename in os.listdir(folder):
@@ -120,20 +119,94 @@ def parasitic_examination_page():
 #------------------------------------------------------------------------------------------------
 #parasitic_detection_page
 #------------------------------------------------------------------------------------------------
+import cv2
+import numpy as np
+import tensorflow as tf
+from keras.models import load_model
+from keras.losses import mean_squared_error
 
 def parasitic_detection_page():
     st.title("Parasitic Detection")
     st.subheader("Upload & View Image")
     st.write("Upload an image and view it below.")
     
+    def mse(y_true, y_pred):
+        return mean_squared_error(y_true, y_pred)
+
+    #--------------------------------------------------------------------------------------------
+    #path = "C:/Users/Pongphan/Desktop/model/aug_img_cnn.h5"
+    path = "model/aug_img_cnn.h5"
+    #--------------------------------------------------------------------------------------------
+    
+    model = load_model(path, custom_objects={'mse': mse})
+
+    def boxlocation(img_c,box_size):
+        a = b = c = d = 0
+        for i in range(img_c.shape[0]):
+            for j in range(img_c.shape[1]):
+                if a==0 and img_c[i,j]>0:
+                    a = i
+                if a!=0 and img_c[i,j]>0:
+                    b = i
+        for j in range(img_c.shape[1]):
+            for i in range(img_c.shape[0]):
+                if c==0 and img_c[i,j]>0:
+                    c = j
+                if c!=0 and img_c[i,j]>0:
+                    d = j
+        locat = [a-box_size,b+box_size,c-box_size,d+box_size]
+        return locat
+
+    def drawbox(img,label,a,b,c,d,box_size):
+        image = cv2.rectangle(img, (c,a), (d,b), (0, 255, 0), 2)
+        image = cv2.putText(image, label, (c+box_size,a-10), cv2.FONT_HERSHEY_TRIPLEX, 2, (255, 0, 255), 1)
+        return image
+
+    def objectdet(img):
+        ratio = 1
+
+        img = cv2.resize(img, (img.shape[1]//ratio,img.shape[0]//ratio), interpolation = cv2.INTER_AREA)
+
+        box_size_y = 200
+        box_size_x = 200
+
+        step_size = 50
+
+        img_output = np.array(img)
+        img_cont = np.zeros((img_output.shape[0],img_output.shape[1]))
+        result = 0
+
+        for i in range(0,img_output.shape[0]-box_size_y,step_size):
+            for j in range(0,img_output.shape[1]-box_size_x,step_size):
+                img_patch = img_output[i:i+box_size_y,j:j+box_size_x]
+                img_patch = cv2.resize(img_patch,(128,128),interpolation=cv2.INTER_AREA)
+                img_patch = [img_patch]
+                img_patch = np.array(img_patch)
+
+                y_outp = model.predict(img_patch,verbose=0)
+
+                if result < y_outp[0][1] and y_outp[0][1] > 0.95:
+                    result = y_outp[0][1]
+                    img_cont[i+(box_size_y//2),j+(box_size_x//2)] = y_outp[0][1]*255
+
+        boxlocat = []
+
+        if result != 0:
+            label = "ov:"+format(result, f".{2}f")
+            boxlocat = boxlocation(img_cont,box_size_x//2)
+            img_output = drawbox(img,label,boxlocat[0],boxlocat[1],boxlocat[2],boxlocat[3],box_size_x//2)
+
+        return img_output
+    
     uploaded_file = st.file_uploader("Choose an image file", type=["png", "jpg", "jpeg", ".tif"])
     if uploaded_file is not None:
         try:
-            image = Image.open(uploaded_file)
+            image = cv2.imread(uploaded_file)
             st.image(image, caption="Uploaded Image", use_column_width=True)
+            output_img = objectdet(image)
+            st.image(output_img, caption="Output Image", use_column_width=True)
         except Exception as e:
             st.error("Error loading image. Please try again.")
-
 #------------------------------------------------------------------------------------------------
 #about_page
 #------------------------------------------------------------------------------------------------
