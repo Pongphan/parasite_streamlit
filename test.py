@@ -21,6 +21,13 @@ def login_page():
             st.error("Invalid username or password.")
 
 #------------------------------------------------------------------------------------------------
+#parasitic_home_page
+#------------------------------------------------------------------------------------------------
+
+def parasitic_home_page():
+    st.write("Parasitic Home Page")
+
+#------------------------------------------------------------------------------------------------
 #parasitic_lecture_page
 #------------------------------------------------------------------------------------------------
 
@@ -148,9 +155,11 @@ else:
     st.sidebar.title("Platform Navigation")
     selected_page = st.sidebar.radio(
         "Go to", 
-        ("Parasitic Lecture", "Parasitic Image Viewer", "Parasitic Examination", "Parasitic Detection", "About"))
+        ("Parasitic Home", "Parasitic Lecture", "Parasitic Image Viewer", "Parasitic Examination", "Parasitic Detection", "About"))
     
-    if selected_page == "Parasitic Lecture":
+    if selected_page == "Parasitic Home":
+        parasitic_home_page()
+    elif selected_page == "Parasitic Lecture":
         parasitic_lecture_page()
     elif selected_page == "Parasitic Image Viewer":
         parasitic_image_viewer_page()
