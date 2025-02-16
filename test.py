@@ -25,7 +25,7 @@ def login_page():
 #------------------------------------------------------------------------------------------------
 
 def parasitic_home_page():
-    st.write("Parasitic Home Page")
+    st.title("Parasitic Home Page")
 
 #------------------------------------------------------------------------------------------------
 #parasitic_lecture_page
