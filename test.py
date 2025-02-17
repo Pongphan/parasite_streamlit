@@ -190,7 +190,7 @@ def parasitic_detection_page():
     def objectdet(img):
         img = cv2.resize(img, (img.shape[1] // 1, img.shape[0] // 1), interpolation=cv2.INTER_AREA)
         
-        box_size_y, box_size_x = 200, 200
+        box_size_y, box_size_x = 370, 370
         step_size = 50
         img_output = np.array(img)
         img_cont = np.zeros((img_output.shape[0], img_output.shape[1]), dtype=np.uint8)
