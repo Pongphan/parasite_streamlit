@@ -126,8 +126,8 @@ def parasitic_image_viewer_page():
         for i in range(0, len(images), cols_per_row):
             cols = st.columns(cols_per_row)
             for col, (filename, image) in zip(cols, images[i:i+cols_per_row]):
-                col.image(image, caption=filename, use_column_width=True)
-                #col.image(image, caption=filename, use_container_width=True)
+                #col.image(image, caption=filename, use_column_width=True)
+                col.image(image, caption=filename, use_container_width=True)
     else:
         st.info("No images found in the folder.")
 
