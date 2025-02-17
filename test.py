@@ -25,7 +25,41 @@ def login_page():
 #------------------------------------------------------------------------------------------------
 
 def parasitic_home_page():
-    st.title("Parasitic Home Page")
+    st.title("Parasitic Platform")
+    st.subheader("Introduction and overview")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.header("Biological Parasite")
+        st.write("""
+        A parasite is an organism that lives on or inside another organism (called the host) and benefits at the host's expense. This relationship often harms the host. Parasites come in many forms, including:
+        - Protozoa (microscopic single-celled organisms)
+        - Helminths (parasitic worms)
+        - Ectoparasites like lice or ticks
+        - Fungi and bacteria that can act in parasitic roles
+                 
+        Parasites have evolved various adaptations to exploit their hosts and may have complex life cycles involving more than one host.
+                 """)
+
+    with col2:
+        st.header("Key Areas of Focus")
+        st.subheader("**Evolutionary Arms Race**")
+        st.write("""
+        Parasite-host interactions are emblematic of a continuous coevolutionary struggle. Hosts evolve defense mechanisms, such as enhanced immune responses, while parasites concurrently develop sophisticated strategies to circumvent these defenses, including antigenic variation and immune modulation. This reciprocal adaptation drives biodiversity and complexity within ecosystems.
+                 """)
+        st.subheader("**Mechanisms of Immune Evasion**")
+        st.write("""
+        Many parasites, including protozoans and helminths, have evolved mechanisms to avoid detection or neutralize host immune responses. For example, some parasites secrete molecules that mimic host proteins, thereby blurring the line between self and non-self, which can lead to chronic infections. Understanding these mechanisms provides insights into potential therapeutic targets for controlling parasitic diseases.
+                 """)
+        st.subheader("Ecological Consequences")
+        st.write("""
+        Beyond the individual level, parasites can influence host population dynamics and community structures. In some ecosystems, parasites regulate host populations, thereby maintaining species diversity and ecological balance. Conversely, parasite outbreaks can lead to significant morbidity and mortality in host populations, potentially triggering cascading effects throughout the ecosystem.
+                 """)
+        st.subheader("Disease Ecology and Public Health")
+        st.write("""
+        The study of parasite-host interactions is crucial in the context of emerging infectious diseases. Changes in environmental conditions, global travel, and human encroachment into wildlife habitats can alter parasite transmission dynamics. Research in this field is vital for predicting and mitigating the impact of parasitic diseases on public health.
+                 """)
 
 #------------------------------------------------------------------------------------------------
 #parasitic_lecture_page
@@ -70,7 +104,7 @@ def parasitic_image_viewer_page():
     st.write("This app displays images from a local folder in a grid layout.")
 
     #--------------------------------------------------------------------------------------------
-    #folder = "C:/Users/Pongphan/Desktop/ev-web"
+    #folder = "E:/P Works/My Projects/Project - ทุน ศ สูง มข/web_component/ev-web"
     folder = "ev-web"
     #--------------------------------------------------------------------------------------------
 
@@ -130,10 +164,10 @@ def parasitic_detection_page():
     st.write("Upload an image and view it below.")
 
     #--------------------------------------------------------------------------------------------
-    #model_path = "C:/Users/Pongphan/Desktop/model/aug_img_cnn.h5"
+    #model_path = "E:/P Works/My Projects/Project - ทุน ศ สูง มข/web_component/model/aug_img_cnn.h5"
     model_path = "model/aug_img_cnn.h5"
     #--------------------------------------------------------------------------------------------
-    
+
     model = tf.keras.models.load_model(model_path, custom_objects={'mse': tf.keras.losses.MeanSquaredError()})
 
     def boxlocation(img_c, box_size):
